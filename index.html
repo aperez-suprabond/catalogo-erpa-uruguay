@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -126,21 +128,42 @@
         /* CONTENIDO */
         .section { page-break-before: always; margin-top: 0; margin-bottom: 0; }
         
-        .section-title {
+        .section-header {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 16px;
             margin-top: 20px;
             padding-bottom: 12px;
-            border-bottom: 3px solid var(--color-yellow);
+            border-bottom: 1px solid var(--neutral-100);
+            cursor: pointer;
+            user-select: none;
         }
         
-        .section-title h2 { 
-            margin-bottom: 0; 
+        .section-header:hover {
+            opacity: 0.8;
+        }
+        
+        .collapse-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: transform 0.3s;
+            color: var(--neutral-600);
+        }
+        
+        .collapse-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .section-title { 
             color: var(--neutral-900);
             font-weight: 700;
             font-size: 20px;
+            margin: 0;
         }
         
         .product-count { 
@@ -152,9 +175,20 @@
             font-size: 12px; 
         }
         
+        .section-content {
+            overflow: hidden;
+            max-height: 10000px;
+            transition: max-height 0.3s ease;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+        }
+        
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(6, 1fr);
             gap: 14px;
             margin-bottom: 20px;
         }
@@ -223,7 +257,7 @@
         
         .table-responsive { 
             overflow-x: auto; 
-            border: 1px solid var(--neutral-300); 
+            border: 1px solid var(--neutral-100); 
             border-radius: 12px; 
             box-shadow: 0 1px 3px rgba(0,0,0,.06); 
         }
@@ -242,7 +276,7 @@
             text-align: center; 
             padding: 16px; 
             background: var(--neutral-50); 
-            border-top: 1px solid var(--neutral-300); 
+            border-top: 1px solid var(--neutral-100); 
         }
         
         .btn { 
@@ -264,9 +298,21 @@
         }
         
         /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .products-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+            }
+        }
+
         @media (max-width: 768px) {
             .products-grid { 
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+                grid-template-columns: repeat(3, 1fr); 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid { 
+                grid-template-columns: repeat(2, 1fr); 
             }
         }
     </style>
@@ -284,6 +330,7 @@
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="Buscar por título, SKU..." onkeyup="filtrarProductos()">
                     <button class="search-btn" onclick="filtrarProductos()">Buscar</button>
+                    <button class="search-btn" onclick="descargarPDF()">📥 PDF</button>
                     <button class="search-btn" onclick="window.print()">📄 Imprimir</button>
                 </div>
             </div>
@@ -304,7 +351,7 @@
 
             <div class="actions">
                 <button class="btn" onclick="descargarCSV()">📥 Descargar CSV</button>
-                <button class="btn" onclick="window.print()">📄 Imprimir PDF</button>
+                <button class="btn" onclick="window.print()">📄 Imprimir</button>
             </div>
         </div>
     </div>
@@ -357,21 +404,50 @@
             });
         }
 
+        function toggleSection(sectionId) {
+            const content = document.getElementById('content-' + sectionId);
+            const icon = document.getElementById('icon-' + sectionId);
+            
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+
         function renderizarCatalogo() {
             const catalogo = document.getElementById('catalogo');
             catalogo.innerHTML = '';
 
             const categorias = [...new Set(catalogoData.productos.map(p => p.Categoria))].sort();
 
-            categorias.forEach(categoria => {
+            categorias.forEach((categoria, idx) => {
                 const productos = catalogoData.productos.filter(p => p.Categoria === categoria);
                 
                 const section = document.createElement('div');
                 section.className = 'section';
 
-                const sectionTitle = document.createElement('div');
-                sectionTitle.className = 'section-title';
-                sectionTitle.innerHTML = `<h2>${categoria}</h2><span class="product-count">${productos.length}</span>`;
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'section-header';
+                sectionHeader.onclick = () => toggleSection(idx);
+                
+                const icon = document.createElement('div');
+                icon.className = 'collapse-icon';
+                icon.id = 'icon-' + idx;
+                icon.textContent = '›';
+                
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = categoria;
+                
+                const count = document.createElement('span');
+                count.className = 'product-count';
+                count.textContent = productos.length;
+                
+                sectionHeader.appendChild(icon);
+                sectionHeader.appendChild(title);
+                sectionHeader.appendChild(count);
+
+                const sectionContent = document.createElement('div');
+                sectionContent.className = 'section-content';
+                sectionContent.id = 'content-' + idx;
 
                 const grid = document.createElement('div');
                 grid.className = 'products-grid';
@@ -401,8 +477,9 @@
                     grid.appendChild(card);
                 });
 
-                section.appendChild(sectionTitle);
-                section.appendChild(grid);
+                sectionContent.appendChild(grid);
+                section.appendChild(sectionHeader);
+                section.appendChild(sectionContent);
                 catalogo.appendChild(section);
             });
         }
@@ -437,6 +514,7 @@
 
             const categorias = [...new Set(catalogoData.productos.map(p => p.Categoria))].sort();
 
+            let sectionIdx = 0;
             categorias.forEach(categoria => {
                 let productos = catalogoData.productos.filter(p => p.Categoria === categoria);
                 
@@ -453,9 +531,30 @@
                 const section = document.createElement('div');
                 section.className = 'section';
 
-                const sectionTitle = document.createElement('div');
-                sectionTitle.className = 'section-title';
-                sectionTitle.innerHTML = `<h2>${categoria}</h2><span class="product-count">${productos.length}</span>`;
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'section-header';
+                sectionHeader.onclick = () => toggleSection(sectionIdx);
+                
+                const icon = document.createElement('div');
+                icon.className = 'collapse-icon';
+                icon.id = 'icon-' + sectionIdx;
+                icon.textContent = '›';
+                
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = categoria;
+                
+                const count = document.createElement('span');
+                count.className = 'product-count';
+                count.textContent = productos.length;
+                
+                sectionHeader.appendChild(icon);
+                sectionHeader.appendChild(title);
+                sectionHeader.appendChild(count);
+
+                const sectionContent = document.createElement('div');
+                sectionContent.className = 'section-content';
+                sectionContent.id = 'content-' + sectionIdx;
 
                 const grid = document.createElement('div');
                 grid.className = 'products-grid';
@@ -485,10 +584,26 @@
                     grid.appendChild(card);
                 });
 
-                section.appendChild(sectionTitle);
-                section.appendChild(grid);
+                sectionContent.appendChild(grid);
+                section.appendChild(sectionHeader);
+                section.appendChild(sectionContent);
                 catalogo.appendChild(section);
+                
+                sectionIdx++;
             });
+        }
+
+        function descargarPDF() {
+            const element = document.getElementById('app');
+            const opt = {
+                margin: 10,
+                filename: 'catalogo-erpa-uruguay.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
         }
 
         function descargarCSV() {
