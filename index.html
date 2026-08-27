@@ -246,7 +246,7 @@
         .producto-imagen {
             width: 100%;
             height: 200px;
-            background-color: var(--neutral-100);
+            background-color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -506,7 +506,6 @@
                         <th>Producto</th>
                         <th>Marca</th>
                         <th>Categoría</th>
-                        <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -516,7 +515,6 @@
                             <td>${p.nombre}</td>
                             <td>${p.marca || '-'}</td>
                             <td>${p.categoria}</td>
-                            <td>${p.descripcion || '-'}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -537,13 +535,12 @@
 
         function descargarCSV() {
             const csv = [
-                ['SKU', 'Producto', 'Marca', 'Categoría', 'Descripción'].join(','),
+                ['SKU', 'Producto', 'Marca', 'Categoría'].join(','),
                 ...productosFiltrados.map(p => [
                     `"${p.id}"`,
                     `"${p.nombre}"`,
                     `"${p.marca || ''}"`,
-                    `"${p.categoria}"`,
-                    `"${p.descripcion || ''}"` 
+                    `"${p.categoria}"`
                 ].join(','))
             ].join('\n');
 
