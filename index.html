@@ -13,6 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         :root {
@@ -29,7 +30,6 @@
         }
 
         body {
-            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background-color: var(--neutral-50);
             color: var(--neutral-900);
         }
@@ -94,13 +94,13 @@
             gap: 8px;
         }
 
-        .categoria-dropdown {
+        .dropdown {
             position: relative;
             flex: 1;
-            min-width: 200px;
+            min-width: 150px;
         }
 
-        .categoria-button {
+        .dropdown-button {
             width: 100%;
             padding: 10px 12px;
             border: 1px solid var(--neutral-100);
@@ -113,11 +113,11 @@
             align-items: center;
         }
 
-        .categoria-dropdown-content {
+        .dropdown-content {
             display: none;
             position: absolute;
             background-color: var(--white);
-            min-width: 300px;
+            min-width: 250px;
             border: 1px solid var(--neutral-100);
             border-radius: 6px;
             padding: 10px;
@@ -129,7 +129,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .categoria-dropdown:hover .categoria-dropdown-content {
+        .dropdown:hover .dropdown-content {
             display: block;
         }
 
@@ -283,37 +283,10 @@
         }
 
         .producto-marca {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--blue);
-            margin-bottom: 4px;
-        }
-
-        .producto-matcheo {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 3px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-
-        .matcheo-exacto {
-            background-color: #E8F5E9;
-            color: #2E7D32;
-        }
-
-        .matcheo-sin_barra {
-            background-color: #FFF3E0;
-            color: #E65100;
-        }
-
-        .matcheo-sin_letra {
-            background-color: #E3F2FD;
-            color: #1565C0;
-        }
-
-        .matcheo-no {
-            background-color: #FFEBEE;
-            color: #C62828;
+            font-weight: 500;
+            margin-top: 6px;
         }
 
         /* Tabla */
@@ -361,25 +334,35 @@
         <h1>Catálogo Grupo Suprabond Uruguay</h1>
         <div class="logos-portada">
             <div class="logo-item">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7DAAAOwwHHb6thAAABI0lEQVR4nO3YQQrCQBCG4ZnyHjy4V0/iRbz4gD6CD+ADeAkv4M16ce8l9CJ6gBbxVJgFZZOEJhLJYP/PBwvZZWZ+d2Z2dyGEEEIIIYQQQgjxT0nSUlJH0rqkD0nrkj4krSXpzWddWMgAAEACAEZSbXaW1Jb0Kb+fJL0l6SOvjZTzV7ztS4qZ4bVEzADAQAIBBhIIIIHgr0rSIu+5NV46MZACQM3yGP8V0xIAACABACMpNDvJakvSe16bLO/WljQzl7T1Ow7yJcqZLf7vHgKVpNWkraRPoRr3xvYt8xhJy7zmqrZuE9OStp+P1tKiTnlM6bwOIYQQQgghhBBCCCHEv/QFVGT9aXxQJNAAAAAASUVORK5CYII=" alt="Logo BLT">
-            </div>
-            <div class="logo-item">
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7DAAAOwwHHb6thAAABB0lEQVR4nO3aMQrCQBCG4ZnyCjm4V0/iRbz4gD6CD+ADeAkv4M16ce8l9CJ6gBbxVJgFZZOEJhLJYP/PBwvZZWZ+d2Z2dyGEEEIIIYQQQgjxT0nSUlJH0rqkD0nrkj4krSXpzWddWMgAAEACAEZSbXaW1Jb0Kb+fJL0l6SOvjZTzV7ztS4qZ4bVEzADAQAIBBhIIIIHgr0rSIu+5NV46MZACQM3yGP8V0xIAACABACMpNDvJakvSe16bLO/WljQzl7T1Ow7yJcqZLf7vHgKVpNWkraRPoRr3xvYt8xhJy7zmqrZuE9OStp+P1tKiTnlM6bwOIYQQQgghhBBCCCHEv/QFVGT9aXxQJNAAAAAASUVORK5CYII=" alt="Logo Suprabond">
             </div>
             <div class="logo-item">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7DAAAOwwHHb6thAAABI0lEQVR4nO3YQQrCQBCG4ZnyHjy4V0/iRbz4gD6CD+ADeAkv4M16ce8l9CJ6gBbxVJgFZZOEJhLJYP/PBwvZZWZ+d2Z2dyGEEEIIIYQQQgjxT0nSUlJH0rqkD0nrkj4krSXpzWddWMgAAEACAEZSbXaW1Jb0Kb+fJL0l6SOvjZTzV7ztS4qZ4bVEzADAQAIBBhIIIIHgr0rSIu+5NV46MZACQM3yGP8V0xIAACABACMpNDvJakvSe16bLO/WljQzl7T1Ow7yJcqZLf7vHgKVpNWkraRPoRr3xvYt8xhJy7zmqrZuE9OStp+P1tKiTnlM6bwOIYQQQgghhBBCCCHEv/QFVGT9aXxQJNAAAAAASUVORK5CYII=" alt="Logo SMS">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7DAAAOwwHHb6thAAABI0lEQVR4nO3YQQrCQBCG4ZnyHjy4V0/iRbz4gD6CD+ADeAkv4M16ce8l9CJ6gBbxVJgFZZOEJhLJYP/PBwvZZWZ+d2Z2dyGEEEIIIYQQQgjxT0nSUlJH0rqkD0nrkj4krSXpzWddWMgAAEACAEZSbXaW1Jb0Kb+fJL0l6SOvjZTzV7ztS4qZ4bVEzADAQAIBBhIIIIHgr0rSIu+5NV46MZACQM3yGP8V0xIAACABACMpNDvJakvSe16bLO/WljQzl7T1Ow7yJcqZLf7vHgKVpNWkraRPoRr3xvYt8xhJy7zmqrZuE9OStp+P1tKiTnlM6bwOIYQQQgghhBBCCCHEv/QFVGT9aXxQJNAAAAAASUVORK5CYII=" alt="Logo BULIT">
+            </div>
+            <div class="logo-item">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7DAAAOwwHHb6thAAABI0lEQVR4nO3YQQrCQBCG4ZnyHjy4V0/iRbz4gD6CD+ADeAkv4M16ce8l9CJ6gBbxVJgFZZOEJhLJYP/PBwvZZWZ+d2Z2dyGEEEIIIYQQQgjxT0nSUlJH0rqkD0nrkj4krSXpzWddWMgAAEACAEZSbXaW1Jb0Kb+fJL0l6SOvjZTzV7ztS4qZ4bVEzADAQAIBBhIIIIHgr0rSIu+5NV46MZACQM3yGP8V0xIAACABACMpNDvJakvSe16bLO/WljQzl7T1Ow7yJcqZLf7vHgKVpNWkraRPoRr3xvYt8xhJy7zmqrZuE9OStp+P1tKiTnlM6bwOIYQQQgghhBBCCCHEv/QFVGT9aXxQJNAAAAAASUVORK5CYII=" alt="Logo Somerset">
             </div>
         </div>
     </div>
 
     <!-- Navbar -->
     <div class="navbar">
-        <div class="navbar-item categoria-dropdown">
-            <button class="categoria-button" onclick="toggleCategorias()">
+        <div class="navbar-item dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('categoriasMenu')">
                 ☰ Categorías
-                <span>▼</span>
+                <span>⌄</span>
             </button>
-            <div class="categoria-dropdown-content" id="categoriasMenu">
+            <div class="dropdown-content" id="categoriasMenu">
+                <!-- Se llena con JavaScript -->
+            </div>
+        </div>
+
+        <div class="navbar-item dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown('marcasMenu')">
+                Marcas
+                <span>⌄</span>
+            </button>
+            <div class="dropdown-content" id="marcasMenu">
                 <!-- Se llena con JavaScript -->
             </div>
         </div>
@@ -408,6 +391,7 @@
         let productosOriginal = [];
         let productosFiltrados = [];
         let categoriasSeleccionadas = [];
+        let marcasSeleccionadas = [];
 
         // Cargar datos
         fetch('datos_catalogo.json')
@@ -416,6 +400,7 @@
                 productosOriginal = data;
                 productosFiltrados = [...productosOriginal];
                 inicializarCategorias();
+                inicializarMarcas();
                 renderizar();
             })
             .catch(e => console.error('Error cargando JSON:', e));
@@ -431,14 +416,29 @@
             `).join('');
         }
 
-        function toggleCategorias() {
-            const menu = document.getElementById('categoriasMenu');
+        function inicializarMarcas() {
+            const marcas = [...new Set(productosOriginal.map(p => p.marca).filter(m => m))].sort();
+            const menu = document.getElementById('marcasMenu');
+            menu.innerHTML = marcas.map(marca => `
+                <label class="checkbox-item">
+                    <input type="checkbox" value="${marca}" onchange="actualizarFiltros()">
+                    <span>${marca}</span>
+                </label>
+            `).join('');
+        }
+
+        function toggleDropdown(dropdownId) {
+            const menu = document.getElementById(dropdownId);
             menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
         }
 
         function actualizarFiltros() {
-            const checkboxes = document.querySelectorAll('.categoria-dropdown-content input:checked');
-            categoriasSeleccionadas = Array.from(checkboxes).map(cb => cb.value);
+            const checkboxesCategorias = document.querySelectorAll('#categoriasMenu input:checked');
+            categoriasSeleccionadas = Array.from(checkboxesCategorias).map(cb => cb.value);
+            
+            const checkboxesMarcas = document.querySelectorAll('#marcasMenu input:checked');
+            marcasSeleccionadas = Array.from(checkboxesMarcas).map(cb => cb.value);
+            
             filtrarProductos();
         }
 
@@ -453,7 +453,10 @@
                 const matchCategoria = categoriasSeleccionadas.length === 0 || 
                     categoriasSeleccionadas.includes(p.categoria);
                 
-                return matchBusqueda && matchCategoria;
+                const matchMarca = marcasSeleccionadas.length === 0 || 
+                    marcasSeleccionadas.includes(p.marca);
+                
+                return matchBusqueda && matchCategoria && matchMarca;
             });
             
             renderizar();
@@ -467,7 +470,7 @@
                 return URL_IMAGENES + nombreArchivo;
             }
             
-            // Si no, intenta con .jpg (extensión más común)
+            // Si no, intenta con .jpg
             return URL_IMAGENES + nombreArchivo + '.jpg';
         }
 
@@ -492,9 +495,6 @@
                         <div class="producto-sku">${p.id}</div>
                         <div class="producto-nombre">${p.nombre}</div>
                         ${p.marca ? `<div class="producto-marca">${p.marca}</div>` : ''}
-                        <div class="producto-matcheo matcheo-${p.matcheo.toLowerCase().replace(' ', '_')}">
-                            ${p.matcheo}
-                        </div>
                     </div>
                 </div>
             `).join('');
@@ -507,7 +507,7 @@
                         <th>Producto</th>
                         <th>Marca</th>
                         <th>Categoría</th>
-                        <th>Matcheo</th>
+                        <th>Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -517,7 +517,7 @@
                             <td>${p.nombre}</td>
                             <td>${p.marca || '-'}</td>
                             <td>${p.categoria}</td>
-                            <td><span class="producto-matcheo matcheo-${p.matcheo.toLowerCase().replace(' ', '_')}">${p.matcheo}</span></td>
+                            <td>${p.descripcion || '-'}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -538,14 +538,13 @@
 
         function descargarCSV() {
             const csv = [
-                ['SKU', 'Producto', 'Marca', 'Categoría', 'Descripción', 'Matcheo'].join(','),
+                ['SKU', 'Producto', 'Marca', 'Categoría', 'Descripción'].join(','),
                 ...productosFiltrados.map(p => [
                     `"${p.id}"`,
                     `"${p.nombre}"`,
                     `"${p.marca || ''}"`,
                     `"${p.categoria}"`,
-                    `"${p.descripcion || ''}"`,
-                    `"${p.matcheo}"`
+                    `"${p.descripcion || ''}"` 
                 ].join(','))
             ].join('\n');
 
